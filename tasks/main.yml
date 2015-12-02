@@ -1,0 +1,19 @@
+---
+- name: install tzdata
+  apt:
+    pkg: tzdata
+  when: ansible_os_family == "Debian"
+  tags: [install_tzdata, configure_tzdata]
+
+- name: Copy timezone {{ timezone }} to /etc/localtime
+  command: rsync --itemize-changes --checksum --copy-links /usr/share/zoneinfo/{{ timezone }} /etc/localtime
+  when: ansible_os_family == "Debian"
+  tags: configure_tzdata
+
+- name: Set /etc/timezone to {{ timezone }}
+  template:
+    src: timezone.j2
+    dest: /etc/timezone 
+  notify: update tzdata
+  when: ansible_os_family == "Debian"
+  tags: configure_tzdata
