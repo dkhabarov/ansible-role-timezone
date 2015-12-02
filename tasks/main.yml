@@ -1,7 +1,10 @@
 ---
 - name: install tzdata
   apt:
-    pkg: tzdata
+    pkg:
+  with_items:
+    - tzdata
+    - rsync
   when: ansible_os_family == "Debian"
   tags: [install_tzdata, configure_tzdata]
 
