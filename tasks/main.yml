@@ -1,7 +1,7 @@
 ---
 - name: install tzdata
   apt:
-    pkg:
+    pkg: "{{ item }}"
   with_items:
     - tzdata
     - rsync
